@@ -7,35 +7,41 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-var temp=100;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Colors.black54 ,
+      backgroundColor:Colors.black87,
       body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top:80.0,left: 150.0),
-              child: Text('بغداد',style: TextStyle(color: Colors.white,fontSize: 30.0,fontWeight: FontWeight.bold),
+        child: Padding(
+          padding: const EdgeInsets.only(top:80.0),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text('بغداد',style: TextStyle(color: Colors.white,fontSize: 30.0,fontWeight: FontWeight.bold),
+                  ),
+                  Text('مشمس',style: TextStyle(color: Colors.white,fontSize: 20.0,
+                  ),
+                  ),
+
+                  Text('60',style: TextStyle(color: Colors.white,fontSize:80.0,
+                  ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right:289.0),
+                    child: Text('الاحد',style: TextStyle(color: Colors.white,fontSize:30.0,),
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.white,
+                  ),
+                ],
               ),
 
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top:4.0,left: 130.0),
-              child: Text('مشمس',style: TextStyle(color: Colors.white,fontSize: 20.0,
-              ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(top:10.0,left: 130),
-              child: Text('60',style: TextStyle(color: Colors.white,fontSize:50.0,
-              ),
-              ),
-            ),
-
-          ],
+            ],
+          ),
         ),
       ),
     );
