@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
       color: Colors.white,
       child: Center(
         child: Image.asset(
-          'images/rain-cloudy.gif',
+          'images/18162-rotating-sun.gif',
           width:200.0,
           height: 200.0,
         ),
