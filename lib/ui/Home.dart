@@ -1,8 +1,9 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
+import 'package:weatherapp/ui/firebaseAction.dart';
 import 'package:weatherapp/ui/searchClass.dart';
 
 class Homepage extends StatefulWidget {
@@ -14,6 +15,15 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+Firestore firestore=Firestore.instance;
+var icon;
+  @override
+  void initState() {
+    // TODO: implement initState
+    firestore.settings(persistenceEnabled: true);
+    icon=firestore.collection('icons').snapshots();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,8 +50,19 @@ class _HomepageState extends State<Homepage> {
                           if (snap.hasData)
                             return Column(
                               children: <Widget>[
-                                Image.network(
-                                    'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'),
+                                StreamBuilder<QuerySnapshot>(
+                                  stream:icon,
+                                    builder: (context,AsyncSnapshot<QuerySnapshot> snp){
+                                 if( snap.connectionState==ConnectionState.waiting)return CircularProgressIndicator();
+                                      else if(snap.hasError) return Text('error');
+                                 else return Container(
+                                     height: 100,width: 100,
+                                   child: Image.network(
+                                     snp.data.documents[0]['img']),
+                                 );
+                                }),
+//                                Image.network(
+//                                    'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'),
                                 Text(
                                   snap.data['name'],
                                   style: TextStyle(
