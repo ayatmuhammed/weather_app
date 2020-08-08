@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:weatherapp/ui/firebaseAction.dart';
 import 'package:weatherapp/ui/searchClass.dart';
@@ -52,14 +53,14 @@ var icon;
                               children: <Widget>[
                                 StreamBuilder<QuerySnapshot>(
                                   stream:icon,
-                                    builder: (context,AsyncSnapshot<QuerySnapshot> snp){
+                                    builder: (context, snp){
                                  if( snap.connectionState==ConnectionState.waiting)return CircularProgressIndicator();
-                                      else if(snap.hasError) return Text('error');
-                                 else return Container(
+                                      else if(snap.hasData) return Container(
                                      height: 100,width: 100,
-                                   child: Image.network(
-                                     snp.data.documents[0]['img']),
+                                   child: snp.data.documents!=null?Image.network(
+                                     snp.data.documents[0]['img']):Container(),
                                  );
+                                      else return Text('error');
                                 }),
 //                                Image.network(
 //                                    'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'),
@@ -92,8 +93,9 @@ var icon;
                             return Center(child: Text('Wait'));
                         }),
                     Image.asset('images/wind-plant (1).gif',height:150.0,width:150.0,),
-                    Text('ليوم هوى دير بالك لتطير',style: TextStyle(
-                        color: Colors.black,fontWeight: FontWeight.bold),),
+                    Text('اليوم هوى دير بالك لتطير',style: TextStyle(
+                      fontFamily: GoogleFonts.tajawal(fontWeight: FontWeight.bold,).fontFamily,
+                        color: Colors.black,fontSize: 30),),
                   ],
                 ),
           ),
@@ -102,7 +104,7 @@ var icon;
     );
   }
 
-  Map details = new Map();
+//  Map details = new Map();
   Future<Map> getData(String city) async {
     var response = await http.get(
         'http://api.openweathermap.org/data/2.5/weather?q=$city&appid=51a7cfa245f571791f971b57d50431ec');
