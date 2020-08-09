@@ -53,12 +53,12 @@ var icon;
                               children: <Widget>[
                                 StreamBuilder<QuerySnapshot>(
                                   stream:icon,
-                                    builder: (context, snp){
-                                 if( snap.connectionState==ConnectionState.waiting)return CircularProgressIndicator();
-                                      else if(snap.hasData) return Container(
+                                    builder: (context, AsyncSnapshot<QuerySnapshot> snp){
+                                 if( snp.connectionState==ConnectionState.waiting)return CircularProgressIndicator();
+                                      else if(snp.hasData && snp.data!=null) return Container(
                                      height: 100,width: 100,
-                                   child: snp.data.documents!=null?Image.network(
-                                     snp.data.documents[0]['img']):Container(),
+                                   child: Image.network(
+                                     snp.data.documents[0]['img']??" "),
                                  );
                                       else return Text('error');
                                 }),
