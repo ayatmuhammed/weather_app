@@ -16,13 +16,11 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-Firestore firestore=Firestore.instance;
-var icon;
+var firestore=Firestore.instance;
   @override
   void initState() {
     // TODO: implement initState
     firestore.settings(persistenceEnabled: true);
-    icon=firestore.collection('icons').snapshots();
     super.initState();
   }
   @override
@@ -51,16 +49,19 @@ var icon;
                           if (snap.hasData)
                             return Column(
                               children: <Widget>[
-                                StreamBuilder<QuerySnapshot>(
-                                  stream:icon,
-                                    builder: (context, AsyncSnapshot<QuerySnapshot> snp){
+                                StreamBuilder<DocumentSnapshot>(
+                                  stream:firestore.collection('icons').document('${snap.data['weather'][0]['icon']}').snapshots(),
+                                    builder: (context, AsyncSnapshot<DocumentSnapshot> snp){
                                  if( snp.connectionState==ConnectionState.waiting)return CircularProgressIndicator();
-                                      else if(snp.hasData && snp.data!=null) return Container(
+                                      else if(snp.hasData) return Container(
                                      height: 100,width: 100,
                                    child: Image.network(
-                                     snp.data.documents[0]['img']??" "),
+                                     snp.data['img'],loadingBuilder: (context, child, loadingProgress) =>
+                                       loadingProgress==null?child:CircularProgressIndicator()
+                                     ,),
                                  );
-                                      else return Text('error');
+                                      else return  Image.network(
+                                    'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png');
                                 }),
 //                                Image.network(
 //                                    'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'),
