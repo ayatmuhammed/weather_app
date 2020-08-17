@@ -41,6 +41,23 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    flavorDimensions "app"
+    productFlavors {
+
+        app1 {
+            dimension "app"
+            applicationId "com.example.flavorsexample.app1"
+            versionCode 1
+            versionName "1.0"
+        }
+
+        app2 {
+            dimension "app"
+            applicationId "com.example.flavorsexample.app2"
+            versionCode 1
+            versionName "1.0"
+        }
+    }
 
     buildTypes {
         release {

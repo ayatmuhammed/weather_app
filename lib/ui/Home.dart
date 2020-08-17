@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:weatherapp/ui/firebaseAction.dart';
 import 'package:weatherapp/ui/searchClass.dart';
 
 class Homepage extends StatefulWidget {
@@ -63,8 +62,7 @@ var firestore=Firestore.instance;
                                       else return  Image.network(
                                     'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png');
                                 }),
-//                                Image.network(
-//                                    'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'),
+//
                                 Text(
                                   snap.data['name'],
                                   style: TextStyle(
@@ -88,15 +86,26 @@ var firestore=Firestore.instance;
                                     fontSize: 80.0,
                                   ),
                                 ),
+
+                                StreamBuilder<DocumentSnapshot>(
+                                    stream:firestore.collection('joks').document('hot').snapshots(),
+                                    builder: (context, AsyncSnapshot<DocumentSnapshot> snp){
+                                      if( snp.connectionState==ConnectionState.waiting)return CircularProgressIndicator();
+                                      else if(snp.hasData) return Container(
+
+                                        child:  Text(snp.data[snap.data['name']],style: TextStyle(
+                                            fontFamily: GoogleFonts.tajawal(fontWeight: FontWeight.bold,).fontFamily,
+                                            color: Colors.black,fontSize:20),),
+                                      );
+                                      else return  Container();
+                                    }),
                               ],
                             );
                           else
                             return Center(child: Text('Wait'));
                         }),
                     Image.asset('images/wind-plant (1).gif',height:150.0,width:150.0,),
-                    Text('اليوم هوى دير بالك لتطير',style: TextStyle(
-                      fontFamily: GoogleFonts.tajawal(fontWeight: FontWeight.bold,).fontFamily,
-                        color: Colors.black,fontSize: 30),),
+
                   ],
                 ),
           ),

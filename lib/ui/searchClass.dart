@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'Home.dart';
@@ -9,10 +8,10 @@ class DataSearch extends SearchDelegate<String> {
   final cities = [
     'بغداد',
     'دهوك',
-    'نينوى',
-    'اربيل',
+    'الموصل',
+    'أربيل',
     'السليمانية',
-    'كركود',
+    'كركوك',
     'صلاح الدين',
     'الانبار',
     'ديالى',
@@ -24,7 +23,7 @@ class DataSearch extends SearchDelegate<String> {
     'المثنى',
     'ذي قار',
     'ميسان',
-    'البصره',
+    'بصرة',
   ];
   final recentCities = [];
   @override
@@ -124,7 +123,7 @@ class DataSearch extends SearchDelegate<String> {
           );
 //        getCity(suggestionsList[index]);
         },
-        leading: Icon(Icons.location_city),
+        leading: Image.asset('images/location.gif'),
         title: RichText(
           text: TextSpan(
             text: suggestionsList[index].substring(0, query.length),
