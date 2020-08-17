@@ -26,7 +26,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     lintOptions {
         disable 'InvalidPackage'
@@ -44,18 +44,20 @@ android {
     flavorDimensions "app"
     productFlavors {
 
-        app1 {
+        user {
             dimension "app"
-            applicationId "com.example.flavorsexample.app1"
+            applicationId "com.flutterapp.weatherapp"
             versionCode 1
             versionName "1.0"
+            signingConfig signingConfigs.debug
         }
 
-        app2 {
+        admin {
             dimension "app"
-            applicationId "com.example.flavorsexample.app2"
+            applicationId "com.flutterapp.weatherapp_Admin"
             versionCode 1
             versionName "1.0"
+            signingConfig signingConfigs.debug
         }
     }
 

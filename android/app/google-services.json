@@ -34,6 +34,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252378148116:android:4714699c8ebf24368c6601",
+        "android_client_info": {
+          "package_name": "com.flutterapp.weatherapp_Admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252378148116-u2mekrufrug32spfvbptl1hl9tf93jv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjvKDF3HH1ZILrOkBQnITrW4zLxJWu4Lc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252378148116-u2mekrufrug32spfvbptl1hl9tf93jv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
