@@ -31,8 +31,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   http: ^0.12.2
-  google_fonts: ^1.1.0
   intl: ^0.15.7
+  translator: ^0.1.5
   #firebase_core:
 
 

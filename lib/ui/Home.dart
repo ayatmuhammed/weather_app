@@ -5,6 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:weatherapp/ui/searchClass.dart';
+import 'package:translator/translator.dart';
 
 class Homepage extends StatefulWidget {
   String myCity;
@@ -16,6 +17,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
 var firestore=Firestore.instance;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -70,13 +72,16 @@ var firestore=Firestore.instance;
                                       fontSize: 30.0,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Text(
-                                  snap.data['weather'][0]['description'],
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20.0,
-                                  ),
-                                ),
+                                FutureBuilder(
+                                  future: translate(snap.data['weather'][0]['description']),
+                                    builder: (context,value)=>Text(
+                                      value.toString(),
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20.0,
+                                      ),
+                                    ),),
+
                                 Text(
                                   ((snap.data['main']['temp']).toInt() -
                                           273)
@@ -122,5 +127,11 @@ var firestore=Firestore.instance;
     data = json.decode(response.body);
     print(data);
     return data;
+  }
+
+  Future<String>translate(String word)async{
+    final translator = GoogleTranslator();
+  return await translator.translate(word, from: 'en', to: 'ar').then((value) => value.toString());
+
   }
 }

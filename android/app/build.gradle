@@ -49,6 +49,7 @@ android {
             applicationId "com.flutterapp.weatherapp"
             versionCode 1
             versionName "1.0"
+            resValue "string","app_name","شلونة الجو"
             signingConfig signingConfigs.debug
         }
 
@@ -57,6 +58,7 @@ android {
             applicationId "com.flutterapp.weatherapp_Admin"
             versionCode 1
             versionName "1.0"
+            resValue "string","app_name","شلونة الجو ادمن"
             signingConfig signingConfigs.debug
         }
     }
