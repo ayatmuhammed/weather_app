@@ -5,6 +5,8 @@ import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 import 'package:weatherapp/ui/searchClass.dart';
 import 'package:translator/translator.dart';
 
@@ -26,49 +28,41 @@ var firestore=Firestore.instance;
   }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor:Colors.white,
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(right:250.0,top: 30),
-                      child: IconButton(
-                        icon: Icon(Icons.search,color: Colors.green,),
-                        onPressed: () {
-                          showSearch(
-                              context: context, delegate: DataSearch(con: context));
-                        },
-                        color:Colors.black,
-                      ),
-                    ),
-                    FutureBuilder(
-                        future: getData(widget.myCity),
-                        builder: (context, snap) {
-                          if (snap.hasData)
-                            return Column(
+    return Material(
+      child: FutureBuilder(
+                  future: getData(widget.myCity),
+                  builder: (context, snap) {
+                    if (snap.hasData)
+                      return Stack(
+
+                        children: [
+                          Positioned(
+                            bottom: 0,
+                            child: WaveWidget(
+                              config: CustomConfig(
+                                  durations: [
+                                   10000,
+                                    10000,
+                                    10000,
+                                    10000,
+                                    1000000
+                                  ],
+                                  heightPercentages: [0.15, 0.20,0.22, 0.23,0.28],
+                                  colors: [
+                                    Colors.red, Colors.white, Colors.green,Colors.black,Colors.white
+                                  ]
+                              ),
+                              size: Size(
+                                MediaQuery.of(context).size.width,
+                                MediaQuery.of(context).size.height/1.2,
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
-                                StreamBuilder<QuerySnapshot>(
-                                  stream:firestore.collection('icons').where(FieldPath.documentId,isEqualTo: snap.data['weather'][0]['icon']).snapshots(),
-                                    builder: (context, AsyncSnapshot<QuerySnapshot> snp){
-                                    if(snp.hasData){
-                                        List img=snp.data.documents.map((e) => e).toList();
-                                      if(img.length>0)
-                                        return Container(
-                                     height: 200,width: 200,
-                                   child: CachedNetworkImage(
-                                       fit: BoxFit.cover,
-                                       imageUrl: img[0]['img']??' '),
-                                 );
-                                      else return CachedNetworkImage(imageUrl: 'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'
-                                        ,fit: BoxFit.cover,);
-                                    }
-                                      else return  CachedNetworkImage(imageUrl: 'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'
-                                      ,fit: BoxFit.cover,);
-                                }),
-//
                                 Text(
                                   widget.myCity,
                                   style: TextStyle(
@@ -109,17 +103,56 @@ var firestore=Firestore.instance;
                                       );
                                       else return  Container();
                                     }),
+                                SizedBox(height: 20,)
                               ],
-                            );
-                          else
-                            return Center(child: Text('Wait'));
-                        }),
-                    Image.asset('images/wind-plant (1).gif',height:150.0,width:150.0,),
-                  ],
-                ),
-          ),
-        ),
-      ),
+                            ),
+                          ),
+                          Positioned(
+                            right: 50,top: 50,
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream:firestore.collection('icons').where(FieldPath.documentId,isEqualTo: snap.data['weather'][0]['icon']).snapshots(),
+                                builder: (context, AsyncSnapshot<QuerySnapshot> snp){
+                                  if(snp.hasData){
+                                    List img=snp.data.documents.map((e) => e).toList();
+                                    if(img.length>0)
+                                      return Container(
+                                        height: 100,width: 100,
+                                        child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl: img[0]['img']??' '),
+                                      );
+                                    else return Container(
+                                      height: 100,width: 100,
+                                      child: CachedNetworkImage(
+                                        imageUrl: 'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'
+                                        ,fit: BoxFit.cover,),
+                                    );
+                                  }
+                                  else return  Container(
+                                    height: 100,width: 100,
+                                    child: CachedNetworkImage(imageUrl: 'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png'
+                                      ,fit: BoxFit.cover,),
+                                  );
+                                }),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30),
+                            child: IconButton(
+                              icon: Icon(Icons.search,color: Colors.green,size: 40,),
+                              onPressed: () {
+                                showSearch(
+                                    context: context, delegate: DataSearch(con: context));
+                              },
+                              color:Colors.black,
+                            ),
+                          ),
+                        ],
+                      );
+                    else
+                      return Center(child:  Center(
+                        child: CircularProgressIndicator()
+                      ),);
+                  }),
     );
   }
 //  Map details = new Map();
