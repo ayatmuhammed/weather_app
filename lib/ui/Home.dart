@@ -39,6 +39,7 @@ class _HomepageState extends State<Homepage> {
     super.initState();
     _controller = VideoPlayerController.asset(
         'assets/Moon7093.mp4')
+
       ..initialize().then((_) {
         _controller.play();
         setState(() {});
