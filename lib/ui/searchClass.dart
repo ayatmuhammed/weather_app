@@ -108,41 +108,44 @@ class DataSearch extends SearchDelegate<String> {
     final suggestionsList = query.isEmpty
         ? recentCities
         : cities.where((p) => p.startsWith(query)).toList();
-    return ListView.builder(
-      itemBuilder: (context, index) => ListTile(
-        onTap: () {
-          showResults(context);
-          print(suggestionsList[index]);
-          close(context, null);
-          Navigator.pushReplacement(con,
-            MaterialPageRoute(
-              builder: (context) => Homepage(
-                myCity: suggestionsList[index],
-              ),
-            ),
-          );
-//        getCity(suggestionsList[index]);
-        },
-        leading: Image.asset('images/location.gif'),
-        title: RichText(
-          text: TextSpan(
-            text: suggestionsList[index].substring(0, query.length),
-            style: TextStyle(
-              color:Colors.green,
-              fontWeight: FontWeight.bold,
-            ),
-            children: [
-              TextSpan(
-                text: suggestionsList[index].substring(query.length),
-                style: TextStyle(
-                  color: Colors.grey,
+    return Container(
+      child: ListView.builder(
+        itemBuilder: (context, index) => ListTile(
+          onTap: () {
+            showResults(context);
+            print(suggestionsList[index]);
+            close(context, null);
+            Navigator.pushReplacement(con,
+              MaterialPageRoute(
+                builder: (context) => Homepage(
+                  myCity: suggestionsList[index],
                 ),
               ),
-            ],
+            );
+//        getCity(suggestionsList[index]);
+          },
+          leading: Image.asset('images/location.gif'),
+          title: RichText(
+            text: TextSpan(
+              text: suggestionsList[index].substring(0, query.length),
+              style: TextStyle(
+                color:Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
+              children: [
+                TextSpan(
+                  text: suggestionsList[index].substring(query.length),
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
+        itemCount: suggestionsList.length,
       ),
-      itemCount: suggestionsList.length,
+      color: Colors.white,
     );
   }
 }

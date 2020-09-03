@@ -6,76 +6,104 @@ import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:weatherapp/ui/searchClass.dart';
 import 'package:translator/translator.dart';
-import 'package:firebase_admob/firebase_admob.dart';
-
-
-const String testDevice="";
+import 'package:intl/intl.dart' as Intl;
+//
+//
+// const String testDevice="";
 
 class Homepage extends StatefulWidget {
-  static final MobileAdTargetingInfo targetingInfo=new MobileAdTargetingInfo(
-    testDevices: testDevice !=null?<String>[testDevice]:null,
-    keywords: <String>['weather','jokes',"weather predication's"],
-    birthday: DateTime.now(),
-    childDirected: true,
-  );
+  // static final MobileAdTargetingInfo targetingInfo=new MobileAdTargetingInfo(
+  //   testDevices: testDevice !=null?<String>[testDevice]:null,
+  //   keywords: <String>['weather','jokes',"weather predication's"],
+  //   birthday: DateTime.now(),
+  //   childDirected: true,
+  // );
   String myCity;
-  Homepage({Key key, this.myCity = 'بغداد'}) : super(key: key);
+  Homepage({Key key, this.myCity=" "}) : super(key: key);
   @override
   _HomepageState createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
   var firestore = Firestore.instance;
+  String _city='بغداد';
   VideoPlayerController _controller;
+  Color color =Colors.black;
+  int date =int.parse(Intl.DateFormat('kk').format( DateTime.now()));
 
   @override
   void initState() {
+    color=(date>=6 && date<18)?Colors.black:Colors.white;
+    if(widget.myCity.isNotEmpty) {
+      saveCity(widget.myCity);
+    }
+    getCity().then((value) {
+      setState(() {
+        _city=value??"بغداد";
+      });
+    });
     firestore.settings(persistenceEnabled: true);
     super.initState();
     _controller = VideoPlayerController.asset(
-        'assets/Moon7093.mp4')
-
+        'assets/Moon.mp4')
       ..initialize().then((_) {
         _controller.play();
         setState(() {});
       });
     _controller.setLooping(true);
-
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(
       child: FutureBuilder(
-          future: getData(widget.myCity),
+          future: getData(_city??"بغداد"),
           builder: (context, snap) {
             if (snap.hasData)
               return Stack(
                 children: [
-                  // Positioned(
-                  //   top: 10.0,
-                  //     child: Container(
-                  //       width: 400.0,
-                  //         height: 400.0,
-                  //         child: Image.asset('images/wind-plant (1).gif'))
-                  // ),
+                  (date >=5 || date<18) ?  Positioned(
+                    top: 10.0,
+                    child: StreamBuilder<DocumentSnapshot>(
+              stream: firestore
+                  .collection('pictures')
+                  .document('img')
+                  .snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snp) {
+              if (snp.hasData) {
+                return Container(
+                  height: MediaQuery.of(context).size.height/2,
+                  width: MediaQuery.of(context).size.width,
+                  child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: snp.data[snap.data['name']] ?? ' '),
+                );
+              } else
+                return Container(
+                  width: 400.0,
+                  height: 400.0,
+                  child: Image.asset('images/wind-plant (1).gif'),
+                );
+            }
+            ),
+                  ):
                       Positioned(
                        top: 10,
                           child: Container(
-                            width: 400,
-                              height:400,
+                            width: MediaQuery.of(context).size.width,
+                              height:MediaQuery.of(context).size.height,
                               child: _controller.value.initialized?AspectRatio(
                                 aspectRatio:_controller.value.aspectRatio ,
                                   child: VideoPlayer(_controller)):Center(child: CircularProgressIndicator(),),
                           )
                       ),
-                  Positioned(
+                  (date >=6 && date<18) ?  Positioned(
                     top: 350,
                     child: WaveWidget(
                       config: CustomConfig(
@@ -108,7 +136,7 @@ class _HomepageState extends State<Homepage> {
               ),
                      // backgroundColor: Colors.white,
                     ),
-                  ),
+                  ):SizedBox(),
 
                   Center(
                     child: Column(
@@ -118,7 +146,7 @@ class _HomepageState extends State<Homepage> {
                         Text(
                           widget.myCity,
                           style: TextStyle(
-                              color: Colors.black,
+                              color: color,
                               fontSize: 30.0,
                               fontWeight: FontWeight.bold),
                         ),
@@ -129,7 +157,7 @@ class _HomepageState extends State<Homepage> {
                               ? Text(
                                   value.data.toString() ?? ' ',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color:color,
                                     fontSize: 20.0,
                                   ),
                                 )
@@ -139,7 +167,7 @@ class _HomepageState extends State<Homepage> {
                           ((snap.data['main']['temp']).toInt() - 273)
                               .toString(),
                           style: TextStyle(
-                              color: Colors.black,
+                              color: color,
                               fontSize: 50.0,
                               fontFamily: 'GESS'),
                         ),
@@ -161,7 +189,7 @@ class _HomepageState extends State<Homepage> {
                                         fontFamily: GoogleFonts.tajawal(
                                           fontWeight: FontWeight.bold,
                                         ).fontFamily,
-                                        color: Colors.black,
+                                        color: color,
                                         fontSize: 20),
                                   ),
                                 );
@@ -219,11 +247,11 @@ class _HomepageState extends State<Homepage> {
                         }),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top:50,left: 20),
+                    padding: const EdgeInsets.only(top:70,left: 20),
                     child: IconButton(
                       icon: Icon(
-                        Icons.wb_sunny,
-                        color: Colors.yellow,
+                        Icons.search,
+                        color:color,
                         size: 40,
                       ),
                       onPressed: () {
@@ -231,7 +259,7 @@ class _HomepageState extends State<Homepage> {
                             context: context,
                             delegate: DataSearch(con: context));
                       },
-                      color: Colors.black,
+                      color: color,
                     ),
                   ),
                 ],
@@ -259,5 +287,13 @@ class _HomepageState extends State<Homepage> {
     return await translator
         .translate(word, from: 'en', to: 'ar')
         .then((value) => value);
+  }
+  saveCity(city) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('city', city);
+  }
+  Future<String> getCity() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+   return await prefs.getString('city');
   }
 }
