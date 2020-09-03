@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Home.dart';
 
@@ -69,6 +70,7 @@ class DataSearch extends SearchDelegate<String> {
           showResults(context);
           print(suggestionsList[index]);
           close(context, null);
+
           Navigator.pushReplacement(
             con,
             MaterialPageRoute(
@@ -115,6 +117,7 @@ class DataSearch extends SearchDelegate<String> {
             showResults(context);
             print(suggestionsList[index]);
             close(context, null);
+            saveCity(suggestionsList[index]);
             Navigator.pushReplacement(con,
               MaterialPageRoute(
                 builder: (context) => Homepage(
@@ -147,5 +150,9 @@ class DataSearch extends SearchDelegate<String> {
       ),
       color: Colors.white,
     );
+  }
+  saveCity(city) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('city', city);
   }
 }

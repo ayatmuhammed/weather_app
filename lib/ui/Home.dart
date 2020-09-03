@@ -25,30 +25,26 @@ class Homepage extends StatefulWidget {
   //   childDirected: true,
   // );
   String myCity;
-  Homepage({Key key, this.myCity=" "}) : super(key: key);
+  Homepage({Key key, this.myCity="بغداد"}) : super(key: key);
   @override
   _HomepageState createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
   var firestore = Firestore.instance;
-  String _city='بغداد';
   VideoPlayerController _controller;
   Color color =Colors.black;
   int date =int.parse(Intl.DateFormat('kk').format( DateTime.now()));
-
   @override
   void initState() {
     color=(date>=6 && date<18)?Colors.black:Colors.white;
-    if(widget.myCity.isNotEmpty) {
-      saveCity(widget.myCity);
-    }
+    firestore.settings(persistenceEnabled: true);
     getCity().then((value) {
       setState(() {
-        _city=value??"بغداد";
+        if(value!=null)
+        widget.myCity=value;
       });
     });
-    firestore.settings(persistenceEnabled: true);
     super.initState();
     _controller = VideoPlayerController.asset(
         'assets/Moon.mp4')
@@ -63,12 +59,12 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Material(
       child: FutureBuilder(
-          future: getData(_city??"بغداد"),
+          future: getData(widget.myCity),
           builder: (context, snap) {
             if (snap.hasData)
               return Stack(
                 children: [
-                  (date >=5 || date<18) ?  Positioned(
+                  (date >=6 && date<18) ?  Positioned(
                     top: 10.0,
                     child: StreamBuilder<DocumentSnapshot>(
               stream: firestore
@@ -151,8 +147,7 @@ class _HomepageState extends State<Homepage> {
                               fontWeight: FontWeight.bold),
                         ),
                         FutureBuilder(
-                          future:
-                              translate(snap.data['weather'][0]['description']),
+                          future: translate(snap.data['weather'][0]['description']),
                           builder: (context, value) => value.hasData
                               ? Text(
                                   value.data.toString() ?? ' ',
@@ -288,11 +283,7 @@ class _HomepageState extends State<Homepage> {
         .translate(word, from: 'en', to: 'ar')
         .then((value) => value);
   }
-  saveCity(city) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('city', city);
-  }
-  Future<String> getCity() async {
+ Future<String> getCity() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
    return await prefs.getString('city');
   }
