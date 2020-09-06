@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:weatherapp/ui/adsClass.dart';
 import 'package:weatherapp/ui/splashScreen.dart';
-void main() => runApp(MaterialApp(
+import 'package:firebase_admob/firebase_admob.dart';
+void main()async{
+  return runApp(MaterialApp(
   home:SplashScreen(),
 )
-);
+);}
 

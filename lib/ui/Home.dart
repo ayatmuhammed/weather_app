@@ -16,6 +16,8 @@ import 'package:translator/translator.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:firebase_admob/firebase_admob.dart';
 
+import 'adsClass.dart';
+
 const String testDevice = "";
 
 class Homepage extends StatefulWidget {
@@ -34,25 +36,6 @@ class _HomepageState extends State<Homepage> {
   );
   BannerAd _bannerAd;
   InterstitialAd _interstitialAd;
-  BannerAd showBannerAd() {
-    return BannerAd(
-        adUnitId: "ca-app-pub-2609542594798987/3620052400",
-        size: AdSize.largeBanner,
-        targetingInfo: targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("Banner Event :$event");
-        });
-  }
-
-  InterstitialAd showInterstitialAd() {
-    return InterstitialAd(
-        adUnitId: "ca-app-pub-2609542594798987/4549990698",
-        targetingInfo: targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("InterstitialAd Event :$event");
-        });
-  }
-
   var firestore = Firestore.instance;
   VideoPlayerController _controller;
   Color color = Colors.black;
@@ -61,17 +44,17 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     color = (date >= 6 && date < 18) ? Colors.black : Colors.white;
     firestore.settings(persistenceEnabled: true);
+    _bannerAd = BannerAd(
+      adUnitId: AdManager.bannerAdUnitId,
+      size: AdSize.banner,
+    );
+    _loadBannerAd();
     getCity().then((value) {
       setState(() {
         if (value != null) widget.myCity = value;
       });
     });
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: "ca-app-pub-2609542594798987~5330743414");
-    _bannerAd = showBannerAd()
-      ..load()
-      ..show();
-
     _controller = VideoPlayerController.asset('assets/Moon.mp4')
       ..initialize().then((_) {
         _controller.play();
@@ -291,7 +274,7 @@ class _HomepageState extends State<Homepage> {
                       ),
 
                       onPressed: () {
-                        showInterstitialAd()..load()..show();
+                        // showInterstitialAd()..load()..show();
                         showSearch(
                             context: context,
                             delegate: DataSearch(con: context));
@@ -330,4 +313,28 @@ class _HomepageState extends State<Homepage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.getString('city');
   }
+  // BannerAd showBannerAd() {
+  //   return BannerAd(
+  //       adUnitId: "ca-app-pub-2609542594798987/3620052400",
+  //       size: AdSize.largeBanner,
+  //       targetingInfo: targetingInfo,
+  //       listener: (MobileAdEvent event) {
+  //         print("Banner Event :$event");
+  //       });
+  // }
+  //
+  // InterstitialAd showInterstitialAd() {
+  //   return InterstitialAd(
+  //       adUnitId: "ca-app-pub-2609542594798987/4549990698",
+  //       targetingInfo: targetingInfo,
+  //       listener: (MobileAdEvent event) {
+  //         print("InterstitialAd Event :$event");
+  //       });
+  // }
+  void _loadBannerAd() {
+    _bannerAd
+      ..load()
+      ..show(anchorType: AnchorType.bottom);
+  }
+
 }
