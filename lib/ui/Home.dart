@@ -97,7 +97,7 @@ class _HomepageState extends State<Homepage> {
                                     child: CachedNetworkImage(
                                         fit: BoxFit.cover,
                                         imageUrl:
-                                            snp.data[snap.data['name']] ?? ' '),
+                                            snp.data[snap.data['name']]??' '),
                                   );
                                 } else
                                   return Container(
@@ -123,7 +123,7 @@ class _HomepageState extends State<Homepage> {
                           )),
                   (date >= 6 && date < 18)
                       ? Positioned(
-                          top: 250,
+                          bottom: 0,
                           child: WaveWidget(
                             config: CustomConfig(
                               gradients: [
@@ -150,75 +150,75 @@ class _HomepageState extends State<Homepage> {
                             ),
                             size: Size(
                               MediaQuery.of(context).size.width,
-                              MediaQuery.of(context).size.height,
+                              MediaQuery.of(context).size.height/2,
                             ),
                             // backgroundColor: Colors.white,
                           ),
                         )
                       : SizedBox(),
                   Positioned(
-                    top: 340,
-                    left: 100,
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.end,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          widget.myCity,
-                          style: TextStyle(
-                            color: color,
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
+                    bottom: 80,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            widget.myCity,
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        FutureBuilder(
-                          future:
-                              translate(snap.data['weather'][0]['description']),
-                          builder: (context, value) => value.hasData
-                              ? Text(
-                                  value.data.toString() ?? ' ',
-                                  style: TextStyle(
-                                    color: color,
-                                    fontSize: 20.0,
-                                  ),
-                                )
-                              : Container(),
-                        ),
-                        Text(
-                          ((snap.data['main']['temp']).toInt() - 273)
-                              .toString(),
-                          style: TextStyle(
-                              color: color, fontSize: 50.0, fontFamily: 'GESS'),
-                        ),
-                        StreamBuilder<DocumentSnapshot>(
-                            stream: firestore
-                                .collection('joks')
-                                .document('hot')
-                                .snapshots(),
-                            builder:
-                                (context, AsyncSnapshot<DocumentSnapshot> snp) {
-                              if (snp.connectionState ==
-                                  ConnectionState.waiting)
-                                return CircularProgressIndicator();
-                              else if (snp.hasData)
-                                return Container(
-                                  child: Text(
-                                    snp.data[snap.data['name']],
+                          FutureBuilder(
+                            future:
+                                translate(snap.data['weather'][0]['description']),
+                            builder: (context, value) => value.hasData
+                                ? Text(
+                                    value.data.toString() ?? ' ',
                                     style: TextStyle(
-                                        fontFamily: GoogleFonts.tajawal(
-                                          fontWeight: FontWeight.bold,
-                                        ).fontFamily,
-                                        color: color,
-                                        fontSize: 20),
-                                  ),
-                                );
-                              else
-                                return Container();
-                            }),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
+                                      color: color,
+                                      fontSize: 20.0,
+                                    ),
+                                  )
+                                : Container(),
+                          ),
+                          Text(
+                            ((snap.data['main']['temp']).toInt() - 273)
+                                .toString(),
+                            style: TextStyle(
+                                color: color, fontSize: 50.0, fontFamily: 'GESS'),
+                          ),
+                          StreamBuilder<DocumentSnapshot>(
+                              stream: firestore
+                                  .collection('joks')
+                                  .document('hot')
+                                  .snapshots(),
+                              builder:
+                                  (context, AsyncSnapshot<DocumentSnapshot> snp) {
+                                if (snp.connectionState ==
+                                    ConnectionState.waiting)
+                                  return CircularProgressIndicator();
+                                else if (snp.hasData)
+                                  return Container(
+                                    child: Text(
+                                      snp.data[snap.data['name']],
+                                      style: TextStyle(
+                                          fontFamily: GoogleFonts.tajawal(
+                                            fontWeight: FontWeight.bold,
+                                          ).fontFamily,
+                                          color: color,
+                                          fontSize: 20),
+                                    ),
+                                  );
+                                else
+                                  return Container();
+                              }),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Positioned(
@@ -265,7 +265,7 @@ class _HomepageState extends State<Homepage> {
                         }),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 60, left: 20),
+                    padding: const EdgeInsets.only(top: 30, left: 5),
                     child: IconButton(
                       icon: Icon(
                         Icons.search,
