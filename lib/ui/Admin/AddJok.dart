@@ -1,7 +1,9 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:weatherapp/ui/Admin/sendNotification.dart';
 
 
 class AddJok extends StatefulWidget {
@@ -43,6 +45,14 @@ class _AddJokState extends State<AddJok> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.purple[100],
+        appBar: AppBar(
+          actions: [
+            InkWell(
+              child: Icon(Icons.send),
+              onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SendNotification())),
+            )
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

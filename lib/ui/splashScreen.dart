@@ -11,7 +11,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState(){
     super.initState();
-    PushNotificationService().initialise();
     Timer(
         Duration(seconds:3),
             ()=>Navigator.of(context).pushReplacement(MaterialPageRoute(
