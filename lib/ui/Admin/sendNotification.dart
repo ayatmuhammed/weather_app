@@ -18,45 +18,47 @@ class _SendNotificationState extends State<SendNotification> {
         appBar: AppBar(),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'images/cloud.png',
-                width:200.0,
-                height: 200.0,
-              ),
-              SizedBox(height: 20,),
-              TextField(
-                textAlign: TextAlign.right,
-                controller: title,
-                decoration: InputDecoration(
-                  hintText: 'عنوان الرسالة',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15)
-                    )
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'images/cloud.png',
+                  width:200.0,
+                  height: 200.0,
                 ),
-              ),
-          SizedBox(height: 20,),
-          TextField(
-            textAlign: TextAlign.right,
-            controller: msg,
-            decoration: InputDecoration(
-              hintText: ' الرسالة',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15)
-              )
-            ),),
-              SizedBox(height: 30,),
-              FloatingActionButton(
-                  onPressed: (){
-                if(title.text.isNotEmpty&&msg.text.isNotEmpty)
-                  sendNotificationToUser(
-                  title: title.text,
-                   body: msg.text
-                  ).then((value) => Navigator.pop(context));
-              }, child:Icon(Icons.send),)
-            ],
+                SizedBox(height: 20,),
+                TextField(
+                  textAlign: TextAlign.right,
+                  controller: title,
+                  decoration: InputDecoration(
+                    hintText: 'عنوان الرسالة',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15)
+                      )
+                  ),
+                ),
+            SizedBox(height: 20,),
+            TextField(
+              textAlign: TextAlign.right,
+              controller: msg,
+              decoration: InputDecoration(
+                hintText: ' الرسالة',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15)
+                )
+              ),),
+                SizedBox(height: 30,),
+                FloatingActionButton(
+                    onPressed: (){
+                  if(title.text.isNotEmpty&&msg.text.isNotEmpty)
+                    sendNotificationToUser(
+                    title: title.text,
+                     body: msg.text
+                    ).then((value) => Navigator.pop(context));
+                }, child:Icon(Icons.send),)
+              ],
+            ),
           ),
         ));
   }
