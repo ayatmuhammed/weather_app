@@ -20,6 +20,7 @@ class PushNotificationService {
       },
     );
   }
-
+  topic(){
+    _fcm.subscribeToTopic('user');
+  }
 }
-

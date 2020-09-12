@@ -16,7 +16,6 @@ import 'package:translator/translator.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:firebase_admob/firebase_admob.dart';
 
-
 import 'adsClass.dart';
 
 const String testDevice = "";
@@ -94,11 +93,11 @@ class _HomepageState extends State<Homepage> {
                                   return Container(
                                     height: MediaQuery.of(context).size.height /
                                         1.5,
-                                    width: 500,
+                                    width: MediaQuery.of(context).size.width,
                                     child: CachedNetworkImage(
                                         fit: BoxFit.cover,
                                         imageUrl:
-                                            snp.data[snap.data['name']] ?? ' '),
+                                            snp.data[snap.data['name']]??' '),
                                   );
                                 } else
                                   return Container(
@@ -107,45 +106,25 @@ class _HomepageState extends State<Homepage> {
                                     child: Image.asset(
                                         'images/wind-plant (1).gif'),
                                   );
-                              },
-                              ),
+                              }),
                         )
                       : Positioned(
                           top: 10,
-                          child:  StreamBuilder<DocumentSnapshot>(
-                            stream: firestore
-                                .collection('pictureNight')
-                                .document('img')
-                                .snapshots(),
-                            builder: (context,
-                                AsyncSnapshot<DocumentSnapshot> snp) {
-                              if (snp.hasData) {
-                                return Container(
-                                  height: MediaQuery.of(context).size.height /
-                                      1.5,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl:
-                                      snp.data[snap.data['name']] ?? ' '),
-                                );
-                              } else
-                                return Container(
-                                  width: 400.0,
-                                  height: 400.0,
-                                  child: Image.asset(
-                                      'images/wind-plant (1).gif'),
-                                );
-                            },
-                          ),
-
-                  ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            child: _controller.value.initialized
+                                ? AspectRatio(
+                                    aspectRatio: _controller.value.aspectRatio,
+                                    child: VideoPlayer(_controller))
+                                : Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                          )),
                   (date >= 6 && date < 18)
-                      ?
-                  Positioned(
-                          top: 250,
-                           child:
-                    WaveWidget(
+                      ? Positioned(
+                          bottom: 0,
+                          child: WaveWidget(
                             config: CustomConfig(
                               gradients: [
                                 [
@@ -171,21 +150,17 @@ class _HomepageState extends State<Homepage> {
                             ),
                             size: Size(
                               MediaQuery.of(context).size.width,
-                              MediaQuery.of(context).size.height,
+                              MediaQuery.of(context).size.height/2,
                             ),
                             // backgroundColor: Colors.white,
                           ),
                         )
-                     : SizedBox(),
+                      : SizedBox(),
                   Positioned(
-                   top: 400,
+                    bottom: 80,
                     child: Container(
-                      color: Colors.indigo[900],
-                      height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
                       child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.end,
-                        // crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
                             widget.myCity,
@@ -290,7 +265,7 @@ class _HomepageState extends State<Homepage> {
                         }),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 60, left: 20),
+                    padding: const EdgeInsets.only(top: 30, left: 5),
                     child: IconButton(
                       icon: Icon(
                         Icons.search,
@@ -299,7 +274,7 @@ class _HomepageState extends State<Homepage> {
                       ),
 
                       onPressed: () {
-                        showInterstitialAd();
+                        // showInterstitialAd()..load()..show();
                         showSearch(
                             context: context,
                             delegate: DataSearch(con: context));
@@ -338,15 +313,24 @@ class _HomepageState extends State<Homepage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.getString('city');
   }
-
-  InterstitialAd showInterstitialAd() {
-    return InterstitialAd(
-        adUnitId:AdManager.interstitialAdUnitId,
-        targetingInfo: targetingInfo,
-        listener: (MobileAdEvent event) {
-          print("InterstitialAd Event :$event");
-        });
-  }
+  // BannerAd showBannerAd() {
+  //   return BannerAd(
+  //       adUnitId: "ca-app-pub-2609542594798987/3620052400",
+  //       size: AdSize.largeBanner,
+  //       targetingInfo: targetingInfo,
+  //       listener: (MobileAdEvent event) {
+  //         print("Banner Event :$event");
+  //       });
+  // }
+  //
+  // InterstitialAd showInterstitialAd() {
+  //   return InterstitialAd(
+  //       adUnitId: "ca-app-pub-2609542594798987/4549990698",
+  //       targetingInfo: targetingInfo,
+  //       listener: (MobileAdEvent event) {
+  //         print("InterstitialAd Event :$event");
+  //       });
+  // }
   void _loadBannerAd() {
     _bannerAd
       ..load()
