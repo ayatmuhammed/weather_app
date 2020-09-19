@@ -63,24 +63,24 @@ class _SendNotificationState extends State<SendNotification> {
         ));
   }
   Future<void> sendNotificationToUser({String title, String body}) async {
-      await http.post(
-        'https://fcm.googleapis.com/fcm/send',
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization': 'key=$servertoken',
-        },
-        body: jsonEncode(
-          <String, dynamic>{
-            'notification': <String, dynamic>{'body': body, 'title': title},
-            'priority': 'high',
-            'data': <String, dynamic>{
-              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            },
-            "to": "/topics/user"
+    var x = await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$servertoken',
       },
-        ),
-      );
-
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{'body': body, 'title': title},
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+          },
+          "to": "/topics/user",
+        },
+      ),
+    );
+    print(x.body);
   }
 
 }
