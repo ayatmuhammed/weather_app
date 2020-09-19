@@ -1,6 +1,5 @@
 import 'dart:async';
 import'package:flutter/material.dart';
-import '../Notification.dart';
 import 'Home.dart';
 class SplashScreen extends StatefulWidget {
   @override
