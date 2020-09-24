@@ -150,7 +150,7 @@ class _HomepageState extends State<Homepage> {
                             ),
                             size: Size(
                               MediaQuery.of(context).size.width,
-                              MediaQuery.of(context).size.height/2,
+                              MediaQuery.of(context).size.height/8,
                             ),
                             // backgroundColor: Colors.white,
                           ),
