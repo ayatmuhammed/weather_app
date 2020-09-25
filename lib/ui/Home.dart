@@ -28,6 +28,10 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+
+
+
+
   static final MobileAdTargetingInfo targetingInfo = new MobileAdTargetingInfo(
     testDevices: <String>[],
     keywords: <String>['weather', 'jokes', "weather predication's"],
@@ -40,15 +44,17 @@ class _HomepageState extends State<Homepage> {
   VideoPlayerController _controller;
   Color color = Colors.black;
   int date = int.parse(Intl.DateFormat('kk').format(DateTime.now()));
+         bool isDay;
   @override
   void initState() {
+    isDay=(date >= 6 && date < 18);
     color = (date >= 6 && date < 18) ? Colors.black : Colors.white;
     firestore.settings(persistenceEnabled: true);
     _bannerAd = BannerAd(
       adUnitId: AdManager.bannerAdUnitId,
       size: AdSize.banner,
     );
-    _loadBannerAd();
+    //_loadBannerAd();
     getCity().then((value) {
       setState(() {
         if (value != null) widget.myCity = value;
@@ -73,20 +79,21 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color:isDay?Colors.white: Color.fromRGBO(30, 51, 72, 1),
       child: FutureBuilder(
           future: getData(widget.myCity),
           builder: (context, snap) {
             if (snap.hasData)
               return Stack(
                 children: [
-                  (date >= 6 && date < 18)
+                  isDay
                       ? Positioned(
                           top: 10.0,
                           child: StreamBuilder<DocumentSnapshot>(
                               stream: firestore
                                   .collection('pictures')
-                                  .document('img')
-                                  .snapshots(),
+                                  .document('img')   .snapshots(),
+
                               builder: (context,
                                   AsyncSnapshot<DocumentSnapshot> snp) {
                                 if (snp.hasData) {
@@ -107,22 +114,36 @@ class _HomepageState extends State<Homepage> {
                                         'images/wind-plant (1).gif'),
                                   );
                               }),
-                        )
-                      : Positioned(
-                          top: 10,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height,
-                            child: _controller.value.initialized
-                                ? AspectRatio(
-                                    aspectRatio: _controller.value.aspectRatio,
-                                    child: VideoPlayer(_controller))
-                                : Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                          )),
-                  (date >= 6 && date < 18)
-                      ? Positioned(
+                        ):Positioned(
+                    top: 10.0,
+                    child: StreamBuilder<DocumentSnapshot>(
+                        stream: firestore
+                            .collection('pictureNight')
+                            .document('img')
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot> snp) {
+                          if (snp.hasData) {
+                            return Container(
+                              height: MediaQuery.of(context).size.height /
+                                  1.5,
+                              width: MediaQuery.of(context).size.width,
+                              child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl:
+                                  snp.data[snap.data['name']]??' '),
+                            );
+                          } else
+                            return Container(
+                              width: 400.0,
+                              height: 400.0,
+                              child: Image.asset(
+                                  'images/wind-plant (1).gif'),
+                            );
+                        }),
+                  ),
+
+                  Positioned(
                           bottom: 0,
                           child: WaveWidget(
                             config: CustomConfig(
@@ -150,17 +171,19 @@ class _HomepageState extends State<Homepage> {
                             ),
                             size: Size(
                               MediaQuery.of(context).size.width,
-                              MediaQuery.of(context).size.height/8,
+                              MediaQuery.of(context).size.height/15,
                             ),
                             // backgroundColor: Colors.white,
                           ),
-                        )
-                      : SizedBox(),
+                        ),
+
                   Positioned(
                     bottom: 80,
                     child: Container(
+                      color:Color(0x1e3348),
                       width: MediaQuery.of(context).size.width,
                       child: Column(
+
                         children: <Widget>[
                           Text(
                             widget.myCity,
@@ -236,16 +259,16 @@ class _HomepageState extends State<Homepage> {
                                 snp.data.documents.map((e) => e).toList();
                             if (img.length > 0)
                               return Container(
-                                height: 100,
-                                width: 100,
+                                height: 50,
+                                width: 50,
                                 child: CachedNetworkImage(
                                     fit: BoxFit.cover,
                                     imageUrl: img[0]['img'] ?? ' '),
                               );
                             else
                               return Container(
-                                height: 100,
-                                width: 100,
+                                height: 50,
+                                width: 50,
                                 child: CachedNetworkImage(
                                   imageUrl:
                                       'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png',
@@ -331,10 +354,10 @@ class _HomepageState extends State<Homepage> {
   //         print("InterstitialAd Event :$event");
   //       });
   // }
-  void _loadBannerAd() {
-    _bannerAd
-      ..load()
-      ..show(anchorType: AnchorType.bottom);
-  }
+  // void _loadBannerAd() {
+  //   _bannerAd
+  //     ..load()
+  //     ..show(anchorType: AnchorType.bottom);
+  // }
 
 }
