@@ -38,9 +38,7 @@ class _AddJokState extends State<AddJok> {
   ];
   String joke;
  TextEditingController jokControler=new TextEditingController();
-//  AddJokes(){
-//FormState.currentState.save();
-//}
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -79,7 +79,7 @@ class DataSearch extends SearchDelegate<String> {
               ),
             ),
           );
-//        getCity(suggestionsList[index]);
+
         },
         leading: Icon(Icons.location_city),
         title: RichText(

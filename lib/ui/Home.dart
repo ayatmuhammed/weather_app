@@ -336,28 +336,28 @@ class _HomepageState extends State<Homepage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.getString('city');
   }
-  // BannerAd showBannerAd() {
-  //   return BannerAd(
-  //       adUnitId: "ca-app-pub-2609542594798987/3620052400",
-  //       size: AdSize.largeBanner,
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("Banner Event :$event");
-  //       });
-  // }
-  //
-  // InterstitialAd showInterstitialAd() {
-  //   return InterstitialAd(
-  //       adUnitId: "ca-app-pub-2609542594798987/4549990698",
-  //       targetingInfo: targetingInfo,
-  //       listener: (MobileAdEvent event) {
-  //         print("InterstitialAd Event :$event");
-  //       });
-  // }
-  // void _loadBannerAd() {
-  //   _bannerAd
-  //     ..load()
-  //     ..show(anchorType: AnchorType.bottom);
-  // }
+  BannerAd showBannerAd() {
+    return BannerAd(
+        adUnitId: "ca-app-pub-2609542594798987/3620052400",
+        size: AdSize.largeBanner,
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("Banner Event :$event");
+        });
+  }
+
+  InterstitialAd showInterstitialAd() {
+    return InterstitialAd(
+        adUnitId: "ca-app-pub-2609542594798987/4549990698",
+        targetingInfo: targetingInfo,
+        listener: (MobileAdEvent event) {
+          print("InterstitialAd Event :$event");
+        });
+  }
+  void _loadBannerAd() {
+    _bannerAd
+      ..load()
+      ..show(anchorType: AnchorType.bottom);
+  }
 
 }
