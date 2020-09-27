@@ -20,12 +20,14 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
+
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
@@ -45,26 +47,6 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    flavorDimensions "app"
-    productFlavors {
-
-        user {
-            dimension "app"
-            applicationId "com.flutterapp.weatherapp"
-            versionCode 1
-            versionName "1.0"
-            resValue "string","app_name","شلونة الجو"
-
-        }
-
-        admin {
-            dimension "app"
-            applicationId "com.flutterapp.weatherapp_Admin"
-            versionCode 1
-            versionName "1.0"
-            resValue "string","app_name","شلونة الجو ادمن"
-        }
-    }
     signingConfigs {
         release {
             keyAlias keystoreProperties['keyAlias']
@@ -81,6 +63,30 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    flavorDimensions "app"
+    productFlavors {
+
+        user {
+            dimension "app"
+            applicationId "com.flutterapp.weatherapp"
+            versionCode flutterVersionCode.toInteger()
+            versionName flutterVersionName
+            versionNameSuffix "-user"
+            resValue "string","app_name","شلونة الجو"
+            signingConfig signingConfigs.release
+        }
+
+        admin {
+            dimension "app"
+            applicationId "com.flutterapp.weatherapp_Admin"
+            versionCode flutterVersionCode.toInteger()
+            versionName flutterVersionName
+            versionNameSuffix "-admin"
+            resValue "string","app_name","شلونة الجو ادمن"
+            signingConfig signingConfigs.release
+        }
+    }
+
 }
 
 flutter {
@@ -91,6 +97,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.3.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.firebase:firebase-analytics:17.4.1'
     implementation 'com.google.firebase:firebase-messaging:20.2.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
