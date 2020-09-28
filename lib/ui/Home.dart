@@ -142,10 +142,7 @@ class _HomepageState extends State<Homepage> {
                               );
                             } else
                               return Container(
-                                width: 400.0,
-                                height: 400.0,
-                                child: Image.asset(
-                                    'images/wind-plant (1).gif'),
+
                               );
                           }),
                     ),
