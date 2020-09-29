@@ -78,7 +78,6 @@ class _HomepageState extends State<Homepage> {
   void dispose() {
     // _bannerAd?.dispose();
     _interstitialAd?.dispose();
-    _interstitialAd?.dispose();
     super.dispose();
   }
 

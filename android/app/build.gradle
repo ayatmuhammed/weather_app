@@ -72,7 +72,7 @@ android {
             versionCode flutterVersionCode.toInteger()
             versionName flutterVersionName
             versionNameSuffix "-user"
-            resValue "string","app_name","شلونة الجو"
+            resValue "string","app_name","شلونه الجو"
             signingConfig signingConfigs.release
         }
 
@@ -82,7 +82,7 @@ android {
             versionCode flutterVersionCode.toInteger()
             versionName flutterVersionName
             versionNameSuffix "-admin"
-            resValue "string","app_name","شلونة الجو ادمن"
+            resValue "string","app_name","شلونه الجو ادمن"
             signingConfig signingConfigs.release
         }
     }
