@@ -26,7 +26,7 @@ class DataSearch extends SearchDelegate<String> {
     'ميسان',
     'بصرة',
   ];
-  final recentCities = [];
+
   @override
   List<Widget> buildActions(BuildContext context) {
     // TODO: implement buildActions
@@ -62,7 +62,7 @@ class DataSearch extends SearchDelegate<String> {
     // TODO: implement buildResults
     // TODO: implement buildSuggestions
     final suggestionsList = query.isEmpty
-        ? recentCities
+        ? cities
         : cities.where((p) => p.startsWith(query)).toList();
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
@@ -108,7 +108,7 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     // TODO: implement buildSuggestions
     final suggestionsList = query.isEmpty
-        ? recentCities
+        ? cities
         : cities.where((p) => p.startsWith(query)).toList();
     return Container(
       child: ListView.builder(

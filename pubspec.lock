@@ -167,6 +167,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.1"
+  flutter_custom_clippers:
+    dependency: "direct dev"
+    description:
+      name: flutter_custom_clippers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
   flutter_local_notifications:
     dependency: "direct dev"
     description:
