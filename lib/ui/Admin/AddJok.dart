@@ -1,9 +1,11 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weatherapp/ui/Admin/login.dart';
 import 'package:weatherapp/ui/Admin/sendNotification.dart';
 
 
@@ -45,9 +47,22 @@ class _AddJokState extends State<AddJok> {
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            InkWell(
-              child: Icon(Icons.send),
-              onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SendNotification())),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                child: Icon(Icons.send),
+                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SendNotification())),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                child: Icon(Icons.logout),
+                onTap: (){
+                FirebaseAuth.instance.signOut().then((value) =>  Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context)=>Login())));
+                },
+              ),
             )
           ],
         ),
@@ -69,9 +84,9 @@ class _AddJokState extends State<AddJok> {
                       fontSize: 20),
                 ),
                 StreamBuilder<DocumentSnapshot>(
-                    stream: Firestore.instance
+                    stream: FirebaseFirestore.instance
                         .collection('joks')
-                        .document('hot')
+                        .doc('hot')
                         .snapshots(),
                     builder:
                         (context, AsyncSnapshot<DocumentSnapshot> snp) {

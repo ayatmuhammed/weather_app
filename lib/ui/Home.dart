@@ -39,7 +39,7 @@ class _HomepageState extends State<Homepage> {
   InterstitialAd _interstitialAd;
 
   // bool _isInterstitialAdReady;
-  var firestore = Firestore.instance;
+  var firestore = FirebaseFirestore.instance;
   Color color = Colors.black;
   int date = int.parse(Intl.DateFormat('kk').format(DateTime.now()));
   bool isDay;
@@ -55,7 +55,6 @@ class _HomepageState extends State<Homepage> {
     );
     isDay = (date >= 6 && date < 18);
     color = (date >= 6 && date < 18) ? Colors.black : Colors.white;
-    firestore.settings(persistenceEnabled: true);
     // _bannerAd = BannerAd(
     //   adUnitId: AdManager.bannerAdUnitId,
     //   size: AdSize.banner,
@@ -237,7 +236,7 @@ class _HomepageState extends State<Homepage> {
                             StreamBuilder<DocumentSnapshot>(
                                 stream: firestore
                                     .collection('joks')
-                                    .document('hot')
+                                    .doc('hot')
                                     .snapshots(),
                                 builder:
                                     (context,
@@ -312,7 +311,7 @@ class _HomepageState extends State<Homepage> {
                           builder: (context, AsyncSnapshot<QuerySnapshot> snp) {
                             if (snp.hasData) {
                               List img =
-                              snp.data.documents.map((e) => e).toList();
+                              snp.data.docs.map((e) => e).toList();
                               if (img.length > 0)
                                 return Container(
                                   height: 40,
