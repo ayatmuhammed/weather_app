@@ -1,4 +1,4 @@
 flutter build apk --target-platform android-arm,android-arm64 --flavor user -t lib/main.dart
-flutter build apk --target-platform android-arm,android-arm64 --flavor admin -t lib/main.dart
+flutter build apk --target-platform android-arm,android-arm64 --flavor admin -t lib/adminMain.dart
 
 flutter build appbundle --flavor user -t lib/main.dart
