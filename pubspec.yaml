@@ -22,7 +22,6 @@ dependencies:
   google_fonts: ^1.1.0
   wave: ^0.0.8
   cached_network_image: ^2.3.0-beta.1+1
-  video_player: ^0.10.12+2
   cloud_firestore: ^0.14.1+2
   shared_preferences: ^0.5.10
   firebase_auth: ^0.18.1+1

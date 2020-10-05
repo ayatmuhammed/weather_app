@@ -11,7 +11,14 @@ void main()async{
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
   FirebaseMessaging().subscribeToTopic("user");
-  return runApp(MaterialApp(
+  return runApp(
+      MaterialApp(
+    theme: ThemeData(
+      accentColor:Color.fromRGBO(184, 189, 245, 0.7),
+      textTheme: TextTheme(
+        bodyText1: TextStyle(fontSize: 25,color: Colors.black,fontWeight: FontWeight.bold),
+      )
+    ),
   home:SplashScreen(),
 )
 );}

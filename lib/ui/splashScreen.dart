@@ -1,6 +1,8 @@
 import 'dart:async';
 import'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weatherapp/ui/selectPage.dart';
+import 'Admin/login.dart';
 import 'Home.dart';
 class SplashScreen extends StatefulWidget {
   @override
@@ -11,13 +13,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState(){
     super.initState();
-    Timer(
+    getAccountType().then((value) {
+      Timer(
         Duration(seconds:3),
             ()=>Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context)=>SelectPage(),
+          builder: (BuildContext context)=>value=='user'?Homepage():value=='admin'?Login():SelectPage(),
         ),
-            ),
-    );
+        ),
+      );
+    });
+
+
   }
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+  Future<String> getAccountType() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.getString('account');
   }
 }
 

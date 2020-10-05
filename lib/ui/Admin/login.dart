@@ -17,22 +17,29 @@ class _FormPageState extends State<Login> {
       textDirection: TextDirection.rtl,
       child: new Scaffold(
           appBar: AppBar(
+            backgroundColor: Color.fromRGBO(184, 189, 245, 0.7),
+            iconTheme: IconThemeData(
+              color: Colors.black
+            ),
             title: Text(
-              'تسجيل دخول'
+              'تسجيل دخول',
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             centerTitle: true,
           ),
-          body: new SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(height: 50,),
                 Image.asset(
-                  'images/cloud.png',
+                  'images/smaile.gif',
+                  color: Theme.of(context).accentColor,
                   width:200.0,
                   height: 200.0,
                 ),
-                SizedBox(height: 30,),
+                SizedBox(height: 40,),
                 Container(
                   margin: EdgeInsets.all(10),
                   child: new TextField(
@@ -73,10 +80,10 @@ class _FormPageState extends State<Login> {
                   ),
                   child: new Text(
                     "دخول",
-                    style: new TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width / 20),
+                    style:Theme.of(context).textTheme.bodyText1,
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 30,vertical: 5),
-                  color: Colors.blue,
+                  color: Theme.of(context).accentColor,
                   onPressed: () {
                     if (name.text != "" && password.text != "") {
                       signIn(name.text, password.text);

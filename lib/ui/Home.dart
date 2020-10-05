@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_player/video_player.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:weatherapp/ui/searchClass.dart';
@@ -20,9 +19,12 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'adsClass.dart';
 
 const String testDevice = "";
+
 class Homepage extends StatefulWidget {
   String myCity;
+
   Homepage({Key key, this.myCity = "بغداد"}) : super(key: key);
+
   @override
   _HomepageState createState() => _HomepageState();
 }
@@ -88,66 +90,59 @@ class _HomepageState extends State<Homepage> {
                   children: [
                     isDay
                         ? Positioned(
-                      top: 10.0,
-                      child: StreamBuilder<DocumentSnapshot>(
-                          stream: firestore
-                              .collection('pictures')
-                              .document('img').snapshots(),
-
-                          builder: (context,
-                              AsyncSnapshot<DocumentSnapshot> snp) {
-                            if (snp.hasData) {
-                              return Container(
-                                height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height /
-                                    1.5,
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
-                                child: CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl:
-                                    snp.data[snap.data['name']] ?? ' '),
-                              );
-                            } else
-                              return Container(
-                                color: Colors.white,
-                              );
-                          }),
-                    ) : Positioned(
-                      top: 10.0,
-                      child: StreamBuilder<DocumentSnapshot>(
-                          stream: firestore
-                              .collection('pictureNight')
-                              .document('img')
-                              .snapshots(),
-                          builder: (context,
-                              AsyncSnapshot<DocumentSnapshot> snp) {
-                            if (snp.hasData) {
-                              return Container(
-                                height: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height /
-                                    1.5,
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
-                                child: CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl:
-                                    snp.data[snap.data['name']] ?? ' '),
-                              );
-                            } else
-                              return Container(
-                                color: Color.fromRGBO(30, 51, 72, 1),
-                              );
-                          }),
-                    ),
+                            top: 10.0,
+                            child: StreamBuilder<DocumentSnapshot>(
+                                stream: firestore
+                                    .collection('pictures')
+                                    .doc('img')
+                                    .snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<DocumentSnapshot> snp) {
+                                  if (snp.hasData) {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              1.5,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              snp.data[snap.data['name']] ??
+                                                  ' '),
+                                    );
+                                  } else
+                                    return Container(
+                                      color: Colors.white,
+                                    );
+                                }),
+                          )
+                        : Positioned(
+                            top: 10.0,
+                            child: StreamBuilder<DocumentSnapshot>(
+                                stream: firestore
+                                    .collection('pictureNight')
+                                    .doc('img')
+                                    .snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<DocumentSnapshot> snp) {
+                                  if (snp.hasData) {
+                                    return Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              1.5,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              snp.data[snap.data['name']] ??
+                                                  ' '),
+                                    );
+                                  } else
+                                    return Container(
+                                      color: Color.fromRGBO(30, 51, 72, 1),
+                                    );
+                                }),
+                          ),
                     Positioned(
                       bottom: 0,
                       child: WaveWidget(
@@ -168,7 +163,6 @@ class _HomepageState extends State<Homepage> {
                               Color.fromRGBO(125, 170, 206, 1),
                               Color.fromRGBO(172, 182, 219, 0.7),
                             ],
-
                           ],
                           durations: [6000, 10800, 10000],
                           heightPercentages: [0.03, 0.01, 0.04],
@@ -176,29 +170,18 @@ class _HomepageState extends State<Homepage> {
                           gradientEnd: Alignment.bottomCenter,
                         ),
                         size: Size(
-                          MediaQuery
-                              .of(context)
-                              .size
-                              .width,
-                          MediaQuery
-                              .of(context)
-                              .size
-                              .height / 15,
+                          MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height / 15,
                         ),
                         // backgroundColor: Colors.white,
                       ),
                     ),
-
                     Positioned(
                       bottom: 80,
                       child: Container(
                         color: Color(0x1e3348),
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
+                        width: MediaQuery.of(context).size.width,
                         child: Column(
-
                           children: <Widget>[
                             Text(
                               widget.myCity.trim(),
@@ -210,18 +193,17 @@ class _HomepageState extends State<Homepage> {
                               ),
                             ),
                             FutureBuilder(
-                              future:
-                              translate(snap.data['weather'][0]['description']),
-                              builder: (context, value) =>
-                              value.hasData
+                              future: translate(
+                                  snap.data['weather'][0]['description']),
+                              builder: (context, value) => value.hasData
                                   ? Text(
-                                value.data.toString() ?? ' ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: color,
-                                  fontSize: 20.0,
-                                ),
-                              )
+                                      value.data.toString() ?? ' ',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: color,
+                                        fontSize: 20.0,
+                                      ),
+                                    )
                                   : Container(),
                             ),
                             Text(
@@ -238,8 +220,7 @@ class _HomepageState extends State<Homepage> {
                                     .collection('joks')
                                     .doc('hot')
                                     .snapshots(),
-                                builder:
-                                    (context,
+                                builder: (context,
                                     AsyncSnapshot<DocumentSnapshot> snp) {
                                   if (snp.connectionState ==
                                       ConnectionState.waiting)
@@ -249,15 +230,15 @@ class _HomepageState extends State<Homepage> {
                                       clipper: MessageClipper(borderRadius: 16),
                                       child: Container(
                                         // margin: EdgeInsets.symmetric(horizontal: 20),
-                                        padding: EdgeInsets.only(top: 10,
+                                        padding: EdgeInsets.only(
+                                            top: 10,
                                             left: 10,
                                             right: 10,
                                             bottom: 30),
                                         constraints: BoxConstraints(
                                             minHeight: 50,
                                             minWidth: 100,
-                                            maxWidth: 300
-                                        ),
+                                            maxWidth: 300),
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(16.0)),
@@ -268,11 +249,9 @@ class _HomepageState extends State<Homepage> {
                                           snp.data[snap.data['name']],
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              fontFamily: GoogleFonts
-                                                  .tajawal(
+                                              fontFamily: GoogleFonts.tajawal(
                                                 fontWeight: FontWeight.bold,
-                                              )
-                                                  .fontFamily,
+                                              ).fontFamily,
                                               color: color,
                                               fontSize: 20),
                                         ),
@@ -306,12 +285,11 @@ class _HomepageState extends State<Homepage> {
                           stream: firestore
                               .collection('icons')
                               .where(FieldPath.documentId,
-                              isEqualTo: snap.data['weather'][0]['icon'])
+                                  isEqualTo: snap.data['weather'][0]['icon'])
                               .snapshots(),
                           builder: (context, AsyncSnapshot<QuerySnapshot> snp) {
                             if (snp.hasData) {
-                              List img =
-                              snp.data.docs.map((e) => e).toList();
+                              List img = snp.data.docs.map((e) => e).toList();
                               if (img.length > 0)
                                 return Container(
                                   height: 40,
@@ -326,8 +304,7 @@ class _HomepageState extends State<Homepage> {
                                   width: 50,
                                   child: CachedNetworkImage(
                                     imageUrl:
-                                    'https://openweathermap.org/img/wn/${snap
-                                        .data['weather'][0]['icon']}@2x.png',
+                                        'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png',
                                     fit: BoxFit.cover,
                                   ),
                                 );
@@ -337,8 +314,7 @@ class _HomepageState extends State<Homepage> {
                                 width: 100,
                                 child: CachedNetworkImage(
                                   imageUrl:
-                                  'https://openweathermap.org/img/wn/${snap
-                                      .data['weather'][0]['icon']}@2x.png',
+                                      'https://openweathermap.org/img/wn/${snap.data['weather'][0]['icon']}@2x.png',
                                   fit: BoxFit.cover,
                                 ),
                               );

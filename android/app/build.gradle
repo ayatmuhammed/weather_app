@@ -56,36 +56,12 @@ android {
         }
     }
     buildTypes {
-        debug{
-            signingConfig signingConfigs.release
-        }
         release {
             signingConfig signingConfigs.release
         }
     }
-    flavorDimensions "app"
-    productFlavors {
 
-        user {
-            dimension "app"
-            applicationId "com.flutterapp.weatherapp"
-            versionCode flutterVersionCode.toInteger()
-            versionName flutterVersionName
-            versionNameSuffix "-user"
-            resValue "string","app_name","شلونه الجو"
-            signingConfig signingConfigs.release
-        }
 
-        admin {
-            dimension "app"
-            applicationId "com.flutterapp.weatherapp_Admin"
-            versionCode flutterVersionCode.toInteger()
-            versionName flutterVersionName
-            versionNameSuffix "-admin"
-            resValue "string","app_name","شلونه الجو ادمن"
-            signingConfig signingConfigs.release
-        }
-    }
 
 }
 
