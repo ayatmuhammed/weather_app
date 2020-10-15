@@ -25,11 +25,11 @@ class _AddJokState extends State<AddJok> {
     'Erbil',
     'Sulaymaniyah',
     'Kirkuk',
-    'Salah ad Din',
+    'Samarra',
     'Al Anbar',
     'Diyālá',
-    'واسط',
-    'Babol',
+    'Kut',
+    'Muḩāfaz̧at Bābil',
     'Karbala',
     'Najaf',
     'Muḩāfaz̧at al Qādisīyah',
@@ -161,7 +161,7 @@ class _AddJokState extends State<AddJok> {
                   child: Text('Add',style: TextStyle( fontSize: 20.0),),
                   onPressed: (){
                     if(jokControler.text.isNotEmpty)
-                    fireStore.document('hot').updateData({
+                    fireStore.doc('hot').update({
                        myCity:jokControler.text,
                      }
                      ).then((value) {

@@ -30,13 +30,12 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  static final MobileAdTargetingInfo targetingInfo = new MobileAdTargetingInfo(
-    testDevices: <String>[],
-    keywords: <String>['weather', 'jokes', "weather predication's"],
-    birthday: DateTime.now(),
-    childDirected: true,
-  );
-
+  // static final MobileAdTargetingInfo targetingInfo = new MobileAdTargetingInfo(
+  //   testDevices: <String>[],
+  //   keywords: <String>['weather', 'jokes', "weather predication's"],
+  //   birthday: DateTime.now(),
+  //   childDirected: true,
+  // );
   // BannerAd _bannerAd;
   InterstitialAd _interstitialAd;
 
@@ -248,6 +247,7 @@ class _HomepageState extends State<Homepage> {
                                         child: Text(
                                           snp.data[snap.data['name']],
                                           textAlign: TextAlign.center,
+                                          textDirection: TextDirection.rtl,
                                           style: TextStyle(
                                               fontFamily: GoogleFonts.tajawal(
                                                 fontWeight: FontWeight.bold,
@@ -347,12 +347,12 @@ class _HomepageState extends State<Homepage> {
       ),
       onWillPop: () {
         _interstitialAd.load().then((value) {
-          if (value) {
+          if (value==true) {
             _interstitialAd.show();
           } else
             SystemNavigator.pop();
         });
-        return null;
+        return  null;
       },
     );
   }
@@ -360,7 +360,7 @@ class _HomepageState extends State<Homepage> {
 //  Map details = new Map();
   Future<Map> getData(String city) async {
     var response = await http.get(
-        'http://api.openweathermap.org/data/2.5/weather?q=$city&appid=51a7cfa245f571791f971b57d50431ec');
+        'http://api.openweathermap.org/data/2.5/weather?q=$city,iq&appid=51a7cfa245f571791f971b57d50431ec');
     Map data;
     data = json.decode(response.body);
     print(data);
