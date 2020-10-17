@@ -5,9 +5,9 @@
 
   static String get appId {
   if (Platform.isAndroid) {
-  return "ca-app-pub-2609542594798987~5330743414";
+  return "ca-app-pub-2609542594798987~6272674437";
   } else if (Platform.isIOS) {
-  return "ca-app-pub-8224917508333426~2005771141";
+  return "ca-app-pub-2609542594798987~6081102745";
   } else {
   throw new UnsupportedError("Unsupported platform");
   }
@@ -24,9 +24,9 @@
   // }
   static String get interstitialAdUnitId {
     if (Platform.isAndroid) {
-      return "ca-app-pub-8224917508333426/8024384585";
+      return "ca-app-pub-2609542594798987/1446372092";
     } else if (Platform.isIOS) {
-      return "ca-app-pub-8224917508333426/9692689478";
+      return "ca-app-pub-2609542594798987/4455678818";
     } else {
       throw new UnsupportedError("Unsupported platform");
     }

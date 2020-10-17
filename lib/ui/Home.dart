@@ -40,6 +40,7 @@ class _HomepageState extends State<Homepage> {
   InterstitialAd _interstitialAd;
 
   // bool _isInterstitialAdReady;
+
   var firestore = FirebaseFirestore.instance;
   Color color = Colors.black;
   int date = int.parse(Intl.DateFormat('kk').format(DateTime.now()));

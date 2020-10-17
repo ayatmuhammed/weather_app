@@ -16,7 +16,7 @@ class AddJok extends StatefulWidget {
 
 class _AddJokState extends State<AddJok> {
 
-  var fireStore = Firestore.instance.collection('joks');
+  var fireStore = FirebaseFirestore.instance.collection('joks');
   String myCity='Baghdad';
   List cities = [
     'Baghdad',
@@ -51,7 +51,8 @@ class _AddJokState extends State<AddJok> {
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 child: Icon(Icons.send),
-                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SendNotification())),
+                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder:
+                    (context)=>SendNotification())),
               ),
             ),
             Padding(
